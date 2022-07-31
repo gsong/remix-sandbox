@@ -135,3 +135,4 @@ export default function CreateOrEditPost() {
 }
 
 export { CatchBoundary } from "~/components/PostNotFound";
+export { ErrorBoundary } from "~/components/ErrorBoundary";
