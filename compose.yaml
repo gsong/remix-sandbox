@@ -1,0 +1,9 @@
+services:
+  server:
+    image: gsong/remix-sandbox
+    build: .
+    # platform: linux/amd64
+    env_file: .env.docker
+    init: true
+    ports:
+      - "3000:8080"
