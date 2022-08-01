@@ -6,16 +6,15 @@ ENV NODE_ENV production
 
 # Install openssl for Prisma
 RUN apt-get update && apt-get install -y openssl sqlite3
-RUN npm install pnpm --location=global
 
 # Install all node_modules, including dev dependencies
 FROM base as deps
 
 WORKDIR /myapp
 
-COPY package.json pnpm-lock.yaml .npmrc ./
+COPY package.json package-lock.json ./
 ENV NODE_ENV development
-RUN pnpm install
+RUN npm install
 
 # Setup production node_modules
 FROM base as production-deps
@@ -23,8 +22,8 @@ FROM base as production-deps
 WORKDIR /myapp
 
 COPY --from=deps /myapp/node_modules /myapp/node_modules
-COPY package.json .npmrc ./
-RUN pnpm prune --prod
+COPY package.json package-lock.json ./
+RUN npm prune --production
 
 # Build the app
 FROM base as build
@@ -51,13 +50,12 @@ RUN echo "#!/bin/sh\nset -x\nsqlite3 \$DATABASE_URL" > /usr/local/bin/database-c
 WORKDIR /myapp
 
 COPY --from=production-deps /myapp/node_modules /myapp/node_modules
+COPY --from=build /myapp/node_modules/.prisma /myapp/node_modules/.prisma
 
 COPY --from=build /myapp/build /myapp/build
 COPY --from=build /myapp/public /myapp/public
 COPY --from=build /myapp/package.json /myapp/package.json
 COPY --from=build /myapp/start.sh /myapp/start.sh
 COPY --from=build /myapp/prisma /myapp/prisma
-
-RUN npx prisma generate
 
 ENTRYPOINT [ "./start.sh" ]
