@@ -4,6 +4,10 @@ services:
     build: .
     # platform: linux/amd64
     env_file: .env.docker
+    environment:
+      PORT: 3000
     init: true
     ports:
-      - "3000:8080"
+      - "3000:3000"
+    volumes:
+      - ./.data/db:/data/
