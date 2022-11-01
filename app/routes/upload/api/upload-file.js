@@ -1,27 +1,22 @@
-import {
-  redirect,
-  unstable_composeUploadHandlers,
-  unstable_createFileUploadHandler,
-  unstable_createMemoryUploadHandler,
-  unstable_parseMultipartFormData,
-} from "@remix-run/node";
+import { unstable_parseMultipartFormData } from "@remix-run/node";
+
+import { addFile } from "~/models/file.server.js";
 
 export const action = async ({ request }) => {
-  const uploadHandler = unstable_composeUploadHandlers(
-    unstable_createFileUploadHandler({
-      maxPartSize: 5_000_000,
-      file: ({ filename }) => filename,
-    }),
-    // parse everything else into memory
-    unstable_createMemoryUploadHandler()
-  );
+  const os = require("node:os");
+  const path = require("node:path");
+
+  const uploadHandler = async ({ filename: name, contentType: type }) => {
+    const filepath = path.join(os.tmpdir(), name);
+    const { id } = await addFile({ name, filepath, type });
+    return JSON.stringify({ id, name, filepath, type });
+  };
 
   const formData = await unstable_parseMultipartFormData(
     request,
     uploadHandler
   );
 
-  const { name, filepath } = formData.get("avatar");
-
-  return { name, filepath };
+  const files = formData.getAll("files").map((f) => JSON.parse(f));
+  return files;
 };
