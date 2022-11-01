@@ -71,7 +71,9 @@ const FileForm = ({ onFetch }) => {
         Choose file:
         <input type="file" name="files" multiple />
       </label>
-      <button>Upload</button>
+      <button disabled={file.state === "submitting"}>
+        {file.state === "submitting" ? "Uploading..." : "Upload"}
+      </button>
     </file.Form>
   );
 };
