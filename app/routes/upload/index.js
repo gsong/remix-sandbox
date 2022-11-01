@@ -9,7 +9,10 @@ export const action = () => {
   // Send email to Liam for approval
   redirect("/upload/thank-you");
 };
-export const loader = async () => json(await getFiles());
+
+export const loader = async () => {
+  return json(await getFiles());
+};
 
 export default function UploadFiles() {
   const dbData = useLoaderData();
@@ -64,8 +67,14 @@ const FileForm = ({ onFetch }) => {
     }
   }, [file]);
 
+  const formOptions = {
+    method: "post",
+    encType: "multipart/form-data",
+    action: "/upload/_api/upload-file",
+  };
+
   return (
-    <file.Form ref={ref}>
+    <file.Form {...formOptions} ref={ref}>
       <label>
         Choose file:
         <input
@@ -74,14 +83,22 @@ const FileForm = ({ onFetch }) => {
           multiple
           disabled={file.state === "submitting"}
           onChange={() => {
-            file.submit(new FormData(ref.current), {
-              method: "post",
-              encType: "multipart/form-data",
-              action: "/upload/_api/upload-file",
-            });
+            file.submit(new FormData(ref.current), formOptions);
           }}
         />
       </label>
+      <button>Cause error</button>
     </file.Form>
+  );
+};
+
+export const ErrorBoundary = ({ error }) => {
+  return (
+    <>
+      <div>Oops, something went wrong...</div>
+      <a href={window.location.href}>Try again</a>
+      <hr />
+      <pre>{error.message}</pre>
+    </>
   );
 };

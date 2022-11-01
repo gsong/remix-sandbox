@@ -6,11 +6,13 @@ export const action = async ({ request }) => {
   const os = require("node:os");
   const path = require("node:path");
 
-  const uploadHandler = async ({ filename: name, contentType: type }) => {
-    // await wait(5000);
-    const filepath = path.join(os.tmpdir(), name);
-    const { id } = await addFile({ name, filepath, type });
-    return JSON.stringify({ id, name, filepath, type });
+  const uploadHandler = async ({ name, filename, contentType: type }) => {
+    if (filename === "") {
+      throw new Error("There's no filename!");
+    }
+    const filepath = path.join(os.tmpdir(), filename);
+    const { id } = await addFile({ name: filename, filepath, type });
+    return JSON.stringify({ id, name: filename, filepath, type });
   };
 
   const formData = await unstable_parseMultipartFormData(
@@ -21,5 +23,3 @@ export const action = async ({ request }) => {
   const files = formData.getAll("files").map((f) => JSON.parse(f));
   return files;
 };
-
-const wait = (ms) => new Promise((r) => setTimeout(r, ms));
