@@ -4,7 +4,11 @@ import { Form, useFetcher, useLoaderData } from "@remix-run/react";
 
 import { getFiles } from "~/models/file.server.js";
 
-export const action = () => redirect("/upload/thank-you");
+export const action = () => {
+  // Copy data from draft to real tables
+  // Send email to Liam for approval
+  redirect("/upload/thank-you");
+};
 export const loader = async () => json(await getFiles());
 
 export default function UploadFiles() {
@@ -22,7 +26,7 @@ export default function UploadFiles() {
 
       <h2>Local Form</h2>
       <Form method="post">
-        <button>Hit me</button>
+        <button>Submit for approval</button>
       </Form>
 
       {pdfs.length > 0 ? (
@@ -61,19 +65,23 @@ const FileForm = ({ onFetch }) => {
   }, [file]);
 
   return (
-    <file.Form
-      method="post"
-      encType="multipart/form-data"
-      action="api/upload-file"
-      ref={ref}
-    >
+    <file.Form ref={ref}>
       <label>
         Choose file:
-        <input type="file" name="files" multiple />
+        <input
+          type="file"
+          name="files"
+          multiple
+          disabled={file.state === "submitting"}
+          onChange={() => {
+            file.submit(new FormData(ref.current), {
+              method: "post",
+              encType: "multipart/form-data",
+              action: "/upload/_api/upload-file",
+            });
+          }}
+        />
       </label>
-      <button disabled={file.state === "submitting"}>
-        {file.state === "submitting" ? "Uploading..." : "Upload"}
-      </button>
     </file.Form>
   );
 };

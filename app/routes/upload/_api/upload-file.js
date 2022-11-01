@@ -7,7 +7,7 @@ export const action = async ({ request }) => {
   const path = require("node:path");
 
   const uploadHandler = async ({ filename: name, contentType: type }) => {
-    await wait(5000);
+    // await wait(5000);
     const filepath = path.join(os.tmpdir(), name);
     const { id } = await addFile({ name, filepath, type });
     return JSON.stringify({ id, name, filepath, type });
