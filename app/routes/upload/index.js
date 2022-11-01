@@ -1,9 +1,10 @@
 import * as React from "react";
-import { json } from "@remix-run/node";
-import { useFetcher, useLoaderData } from "@remix-run/react";
+import { json, redirect } from "@remix-run/node";
+import { Form, useFetcher, useLoaderData } from "@remix-run/react";
 
 import { getFiles } from "~/models/file.server.js";
 
+export const action = () => redirect("/upload/thank-you");
 export const loader = async () => json(await getFiles());
 
 export default function UploadFiles() {
@@ -18,6 +19,11 @@ export default function UploadFiles() {
 
       <h2>Images</h2>
       <FileForm onFetch={(data) => setImages((state) => [...state, ...data])} />
+
+      <h2>Local Form</h2>
+      <Form method="post">
+        <button>Hit me</button>
+      </Form>
 
       {pdfs.length > 0 ? (
         <>
