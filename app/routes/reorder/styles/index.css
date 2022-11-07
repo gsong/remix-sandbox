@@ -1,0 +1,20 @@
+li {
+  padding: 0.5rem;
+}
+
+li:is(:focus, :focus-within) {
+  background-color: aliceblue;
+}
+
+li > div {
+  display: flex;
+  gap: 1rem;
+}
+
+li > div > *:first-child {
+  flex-basis: 30ch;
+}
+
+button:focus {
+  border: 1px solid blue;
+}
