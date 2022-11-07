@@ -18,7 +18,7 @@ export default function ReorderRoute() {
     focusTrack,
     setFocusTrack,
     focusWithinTrack,
-    setFocusWithinTrack,
+    clickFocusWithinTrack,
     focusRef,
     onKeyDown,
   } = useSetup();
@@ -38,7 +38,7 @@ export default function ReorderRoute() {
               onClick={(e) => {
                 setFocusTrack(e.currentTarget.id);
               }}
-              {...{ track, focusWithinTrack, setFocusWithinTrack, onKeyDown }}
+              {...{ track, focusWithinTrack, clickFocusWithinTrack, onKeyDown }}
             />
           );
         })}
@@ -49,7 +49,7 @@ export default function ReorderRoute() {
 }
 
 const Track = React.forwardRef(
-  ({ track, focusWithinTrack, setFocusWithinTrack, ...props }, ref) => {
+  ({ track, focusWithinTrack, clickFocusWithinTrack, ...props }, ref) => {
     const trackRef = React.useRef();
     const buttonRef = React.useRef();
 
@@ -63,6 +63,11 @@ const Track = React.forwardRef(
       },
     }));
 
+    const onButtonClick = (button) => (event) => {
+      event.stopPropagation();
+      clickFocusWithinTrack({ track: track.id, button });
+    };
+
     return (
       <li id={track.id} ref={trackRef} {...props}>
         <div>
@@ -72,7 +77,7 @@ const Track = React.forwardRef(
               <button
                 tabIndex={-1}
                 ref={focusWithinTrack === "up" ? buttonRef : null}
-                onClick={() => setFocusWithinTrack("up")}
+                onClick={onButtonClick("up")}
               >
                 Move up
               </button>
@@ -83,7 +88,7 @@ const Track = React.forwardRef(
               <button
                 tabIndex={-1}
                 ref={focusWithinTrack === "down" ? buttonRef : null}
-                onClick={() => setFocusWithinTrack("down")}
+                onClick={onButtonClick("down")}
               >
                 Move down
               </button>
@@ -95,10 +100,40 @@ const Track = React.forwardRef(
   }
 );
 
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "set-track": {
+      const focusTrack =
+        typeof action.value === "function" ? action.value(state) : action.value;
+
+      return { focusTrack, focusWithinTrack: null };
+    }
+
+    case "set-within": {
+      return { ...state, focusWithinTrack: action.value };
+    }
+
+    case "click-within": {
+      return {
+        focusTrack: action.value.track,
+        focusWithinTrack: action.value.button,
+      };
+    }
+
+    default:
+      throw new Error(`Invalid action ${action.type}`);
+  }
+};
+
 const useSetup = () => {
   const tracks = useLoaderData();
-  const [focusTrack, setFocusTrack] = React.useState(tracks[0].id);
-  const [focusWithinTrack, setFocusWithinTrack] = React.useState(null);
+  const [{ focusTrack, focusWithinTrack }, dispatch] = React.useReducer(
+    reducer,
+    {
+      focusTrack: tracks[0].id,
+      focusWithinTrack: null,
+    }
+  );
   const focusRef = React.useRef();
 
   React.useEffect(() => {
@@ -110,6 +145,12 @@ const useSetup = () => {
   }, [focusTrack, focusWithinTrack]);
 
   const findTrackIndex = (id) => tracks.findIndex((track) => track.id === id);
+  const setFocusTrack = (value) => dispatch({ type: "set-track", value });
+  const setFocusWithinTrack = (value) =>
+    dispatch({ type: "set-within", value });
+  const clickFocusWithinTrack = (value) =>
+    dispatch({ type: "click-within", value });
+
   const moveFocusRightWithinTrack = () => {
     switch (focusWithinTrack) {
       case "up": {
@@ -152,8 +193,8 @@ const useSetup = () => {
     switch (event.key) {
       case "Down":
       case "ArrowDown": {
-        setFocusTrack((focusedTrack) => {
-          const currentIndex = findTrackIndex(focusedTrack);
+        setFocusTrack(({ focusTrack }) => {
+          const currentIndex = findTrackIndex(focusTrack);
           const nextIndex = Math.min(currentIndex + 1, tracks.length - 1);
           return tracks[nextIndex].id;
         });
@@ -162,8 +203,8 @@ const useSetup = () => {
 
       case "Up":
       case "ArrowUp": {
-        setFocusTrack((focusedTrack) => {
-          const currentIndex = findTrackIndex(focusedTrack);
+        setFocusTrack(({ focusTrack }) => {
+          const currentIndex = findTrackIndex(focusTrack);
           const nextIndex = Math.max(currentIndex - 1, 0);
           return tracks[nextIndex].id;
         });
@@ -192,7 +233,7 @@ const useSetup = () => {
     focusTrack,
     setFocusTrack,
     focusWithinTrack,
-    setFocusWithinTrack,
+    clickFocusWithinTrack,
     focusRef,
     onKeyDown,
   };

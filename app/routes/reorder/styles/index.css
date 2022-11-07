@@ -6,6 +6,10 @@ li:is(:focus, :focus-within) {
   background-color: aliceblue;
 }
 
+li:focus {
+  outline: blue solid 3px;
+}
+
 li > div {
   display: flex;
   gap: 1rem;
@@ -15,6 +19,6 @@ li > div > *:first-child {
   flex-basis: 30ch;
 }
 
-button:focus {
-  border: 1px solid blue;
+li button:focus {
+  outline: blue solid 3px;
 }
