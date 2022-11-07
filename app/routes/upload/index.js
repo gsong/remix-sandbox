@@ -7,7 +7,7 @@ import { getFiles } from "~/models/file.server.js";
 export const action = () => {
   // Copy data from draft to real tables
   // Send email to Liam for approval
-  redirect("/upload/thank-you");
+  return redirect("/upload/thank-you");
 };
 
 export const loader = async () => {
