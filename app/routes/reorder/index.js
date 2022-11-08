@@ -1,6 +1,6 @@
 import * as React from "react";
 import { json } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { useFetcher, useLoaderData } from "@remix-run/react";
 
 import { getTracks } from "./_data-sources/track.server.js";
 
@@ -52,6 +52,8 @@ const Track = React.forwardRef(
   ({ track, focusWithinTrack, clickFocusWithinTrack, ...props }, ref) => {
     const trackRef = React.useRef();
     const buttonRef = React.useRef();
+    const moveUp = useFetcher();
+    const moveDown = useFetcher();
 
     React.useImperativeHandle(ref, () => ({
       focus: () => trackRef.current.focus(),
@@ -73,26 +75,30 @@ const Track = React.forwardRef(
         <div>
           <div>{track.name}</div>
           <div>
-            <Form>
+            <moveUp.Form method="post" action="_api/moveTrackUp">
               <button
                 tabIndex={-1}
                 ref={focusWithinTrack === "up" ? buttonRef : null}
                 onClick={onButtonClick("up")}
+                name="trackId"
+                value={track.id}
               >
                 Move up
               </button>
-            </Form>
+            </moveUp.Form>
           </div>
           <div>
-            <Form>
+            <moveDown.Form method="post" action="_api/moveTrackDown">
               <button
                 tabIndex={-1}
                 ref={focusWithinTrack === "down" ? buttonRef : null}
                 onClick={onButtonClick("down")}
+                name="trackId"
+                value={track.id}
               >
                 Move down
               </button>
-            </Form>
+            </moveDown.Form>
           </div>
         </div>
       </li>

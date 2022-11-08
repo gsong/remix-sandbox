@@ -56,5 +56,5 @@ model File {
 model Track {
   id          String @id @default(cuid())
   name        String
-  trackNumber Int
+  trackNumber Int @unique
 }
