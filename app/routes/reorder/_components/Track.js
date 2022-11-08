@@ -1,8 +1,8 @@
 import * as React from "react";
 import { useFetcher } from "@remix-run/react";
 
-import { VisuallyHidden } from "@reach/visually-hidden";
 import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/24/solid";
+import { VisuallyHidden } from "@reach/visually-hidden";
 import { motion } from "framer-motion";
 
 const Track = React.forwardRef(
@@ -20,7 +20,7 @@ const Track = React.forwardRef(
     return (
       <motion.li id={track.id} ref={trackRef} {...props} layout="position">
         <div>
-          <div>{track.name}</div>
+          <div className="track-name">{track.name}</div>
           <div>
             <moveUp.Form method="post" action="_api/moveTrackUp">
               <Button direction="up" icon={ArrowUpIcon} {...buttonProps} />

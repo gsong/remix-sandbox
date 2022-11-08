@@ -1,26 +1,30 @@
-li {
+:root {
+  font-family: system-ui, sans-serif;
+}
+
+ul > * + * {
+  margin-block-start: 0.35rem;
+}
+
+.tracks li {
   padding: 0.5rem;
 }
 
-li:is(:focus, :focus-within, :hover) {
+.tracks li:is(:focus, :focus-within, :hover) {
   background-color: aliceblue;
 }
 
-li:focus {
+.tracks li:focus {
   outline: 3px solid blue;
 }
 
-li > div {
+.tracks li > div {
   display: flex;
   gap: 1rem;
   align-items: center;
 }
 
-li > div > *:first-child {
-  flex-basis: 30ch;
-}
-
-li button {
+.tracks li button {
   background-color: transparent;
   border: 2px solid black;
   border-radius: 50%;
@@ -29,10 +33,14 @@ li button {
   aspect-ratio: 1/1;
 }
 
-li button:is(:focus, :hover) {
+.tracks li button:is(:focus, :hover) {
   border-color: blue;
 }
 
-li button:focus {
+.tracks li button:focus {
   outline: 1px solid blue;
+}
+
+.track-name {
+  flex-basis: 30ch;
 }

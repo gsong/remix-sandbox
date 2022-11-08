@@ -2,6 +2,7 @@ import * as React from "react";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
+import Instructions from "./_components/Instructions.mdx";
 import Track from "./_components/Track.js";
 import { getTracks } from "./_data-sources/track.server.js";
 
@@ -26,9 +27,10 @@ export default function ReorderRoute() {
 
   return (
     <main>
+      <Instructions />
       <a href=".">Random link to focus on</a>
       <h2>Primary Tracks</h2>
-      <ol>
+      <ol className="tracks">
         {tracks.map((track) => {
           const hasFocus = focusTrack === track.id;
           return (
