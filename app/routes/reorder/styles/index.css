@@ -1,0 +1,46 @@
+:root {
+  font-family: system-ui, sans-serif;
+}
+
+ul > * + * {
+  margin-block-start: 0.35rem;
+}
+
+.tracks li {
+  padding: 0.5rem;
+}
+
+.tracks li:is(:focus, :focus-within, :hover) {
+  background-color: aliceblue;
+}
+
+.tracks li:focus {
+  outline: 3px solid blue;
+}
+
+.tracks li > div {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.tracks li button {
+  background-color: transparent;
+  border: 2px solid black;
+  border-radius: 50%;
+  padding: 0.25rem;
+  height: 2.75rem;
+  aspect-ratio: 1/1;
+}
+
+.tracks li button:is(:focus, :hover) {
+  border-color: blue;
+}
+
+.tracks li button:focus {
+  outline: 1px solid blue;
+}
+
+.track-name {
+  flex-basis: 30ch;
+}

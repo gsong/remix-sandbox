@@ -52,3 +52,9 @@ model File {
   filepath String
   type     String
 }
+
+model Track {
+  id          String @id @default(cuid())
+  name        String
+  trackNumber Int @unique
+}

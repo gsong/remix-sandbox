@@ -85,8 +85,29 @@ Isn't it great?
     });
   }
 
+  TRACKS.forEach(
+    async (track) =>
+      await prisma.track.create({
+        data: track,
+      })
+  );
+
   console.log(`Database has been seeded. 🌱`);
 }
+
+const TRACKS = [
+  { name: "Everything In Its Right Place", trackNumber: 1 },
+  { name: "Kid A", trackNumber: 2 },
+  { name: "The National Anthem", trackNumber: 3 },
+  { name: "How to Disappear Completely", trackNumber: 4 },
+  { name: "Treefingers", trackNumber: 5 },
+  { name: "Optimistic", trackNumber: 6 },
+  { name: "In Limbo", trackNumber: 7 },
+  { name: "Idioteque", trackNumber: 8 },
+  { name: "Morning Bell", trackNumber: 9 },
+  { name: "Motion Picture Soundtrack", trackNumber: 10 },
+  { name: "Untitled", trackNumber: 11 },
+];
 
 seed()
   .catch((e) => {
