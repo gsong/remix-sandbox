@@ -15,42 +15,48 @@ const Track = React.forwardRef(
       clickFocusWithinTrack({ track: track.id, button });
     };
 
+    const buttonProps = { track, focusWithinTrack, onButtonClick, buttonRef };
+
     return (
       <motion.li id={track.id} ref={trackRef} {...props} layout="position">
         <div>
           <div>{track.name}</div>
           <div>
             <moveUp.Form method="post" action="_api/moveTrackUp">
-              <button
-                tabIndex={-1}
-                ref={focusWithinTrack === "up" ? buttonRef : null}
-                onClick={onButtonClick("up")}
-                name="trackId"
-                value={track.id}
-              >
-                <VisuallyHidden>Move {track.name} up</VisuallyHidden>
-                <ArrowUpIcon aria-hidden focusable={false} />
-              </button>
+              <Button direction="up" icon={ArrowUpIcon} {...buttonProps} />
             </moveUp.Form>
           </div>
           <div>
             <moveDown.Form method="post" action="_api/moveTrackDown">
-              <button
-                tabIndex={-1}
-                ref={focusWithinTrack === "down" ? buttonRef : null}
-                onClick={onButtonClick("down")}
-                name="trackId"
-                value={track.id}
-              >
-                <VisuallyHidden>Move {track.name} down</VisuallyHidden>
-                <ArrowDownIcon aria-hidden focusable={false} />
-              </button>
+              <Button direction="down" icon={ArrowDownIcon} {...buttonProps} />
             </moveDown.Form>
           </div>
         </div>
       </motion.li>
     );
   }
+);
+
+const Button = ({
+  track,
+  focusWithinTrack,
+  onButtonClick,
+  buttonRef,
+  direction,
+  icon: Icon,
+  ...props
+}) => (
+  <button
+    tabIndex={-1}
+    ref={focusWithinTrack === direction ? buttonRef : null}
+    onClick={onButtonClick(direction)}
+    name="trackId"
+    value={track.id}
+    {...props}
+  >
+    <VisuallyHidden>{`Move ${track.name} ${direction}`}</VisuallyHidden>
+    <Icon aria-hidden focusable={false} />
+  </button>
 );
 
 const scrollIntoView = (type, node) => {
