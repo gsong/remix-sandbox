@@ -2,7 +2,7 @@ li {
   padding: 0.5rem;
 }
 
-li:is(:focus, :focus-within) {
+li:is(:focus, :focus-within, :hover) {
   background-color: aliceblue;
 }
 
@@ -29,7 +29,10 @@ li button {
   aspect-ratio: 1/1;
 }
 
-li button:focus {
+li button:is(:focus, :hover) {
   border-color: blue;
+}
+
+li button:focus {
   outline: 1px solid blue;
 }
