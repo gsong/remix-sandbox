@@ -129,7 +129,8 @@ const useSetup = () => {
       case "ArrowDown": {
         setFocusTrack(({ focusTrack }) => {
           const currentIndex = findTrackIndex(focusTrack);
-          const nextIndex = Math.min(currentIndex + 1, tracks.length - 1);
+          const nextIndex =
+            currentIndex === tracks.length - 1 ? 0 : currentIndex + 1;
           return tracks[nextIndex].id;
         });
         break;
@@ -139,7 +140,8 @@ const useSetup = () => {
       case "ArrowUp": {
         setFocusTrack(({ focusTrack }) => {
           const currentIndex = findTrackIndex(focusTrack);
-          const nextIndex = Math.max(currentIndex - 1, 0);
+          const nextIndex =
+            currentIndex === 0 ? tracks.length - 1 : currentIndex - 1;
           return tracks[nextIndex].id;
         });
         break;
