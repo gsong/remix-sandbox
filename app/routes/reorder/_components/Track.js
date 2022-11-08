@@ -28,7 +28,7 @@ const Track = React.forwardRef(
                 name="trackId"
                 value={track.id}
               >
-                <VisuallyHidden>Move up</VisuallyHidden>
+                <VisuallyHidden>Move {track.name} up</VisuallyHidden>
                 <ArrowUpIcon aria-hidden focusable={false} />
               </button>
             </moveUp.Form>
@@ -42,7 +42,7 @@ const Track = React.forwardRef(
                 name="trackId"
                 value={track.id}
               >
-                <VisuallyHidden>Move down</VisuallyHidden>
+                <VisuallyHidden>Move {track.name} down</VisuallyHidden>
                 <ArrowDownIcon aria-hidden focusable={false} />
               </button>
             </moveDown.Form>
