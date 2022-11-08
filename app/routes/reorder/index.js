@@ -79,6 +79,13 @@ const reducer = (state, action) => {
   }
 };
 
+const FOCUS_WITHIN_FSM = new Map([
+  ["default", null],
+  [null, { next: "up", previous: "down" }],
+  ["up", { next: "down", previous: null }],
+  ["down", { next: null, previous: "up" }],
+]);
+
 const useSetup = () => {
   const tracks = useLoaderData();
   const [{ focusTrack, focusWithinTrack }, dispatch] = React.useReducer(
@@ -105,41 +112,8 @@ const useSetup = () => {
   const clickFocusWithinTrack = (value) =>
     dispatch({ type: "click-within", value });
 
-  const moveFocusRightWithinTrack = () => {
-    switch (focusWithinTrack) {
-      case "up": {
-        setFocusWithinTrack("down");
-        break;
-      }
-
-      case "down": {
-        setFocusWithinTrack(null);
-        break;
-      }
-
-      default: {
-        setFocusWithinTrack("up");
-      }
-    }
-  };
-
-  const moveFocusLeftWithinTrack = () => {
-    switch (focusWithinTrack) {
-      case "up": {
-        setFocusWithinTrack(null);
-        break;
-      }
-
-      case "down": {
-        setFocusWithinTrack("up");
-        break;
-      }
-
-      default: {
-        setFocusWithinTrack("down");
-      }
-    }
-  };
+  const moveFocusWithinTrack = (transition) =>
+    setFocusWithinTrack(FOCUS_WITHIN_FSM.get(focusWithinTrack)[transition]);
 
   const onKeyDown = (event) => {
     if (event.defaultPrevented) return;
@@ -177,13 +151,13 @@ const useSetup = () => {
 
       case "Right":
       case "ArrowRight": {
-        moveFocusRightWithinTrack();
+        moveFocusWithinTrack("next");
         break;
       }
 
       case "Left":
       case "ArrowLeft": {
-        moveFocusLeftWithinTrack();
+        moveFocusWithinTrack("previous");
         break;
       }
 
