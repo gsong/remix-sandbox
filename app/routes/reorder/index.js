@@ -88,32 +88,36 @@ const FOCUS_WITHIN_FSM = new Map([
 
 const useSetup = () => {
   const tracks = useLoaderData();
+  const focusRef = React.useRef();
+
   const [{ focusTrack, focusWithinTrack }, dispatch] = React.useReducer(
     reducer,
     {
       focusTrack: tracks[0].id,
-      focusWithinTrack: null,
+      focusWithinTrack: FOCUS_WITHIN_FSM.get("default"),
     }
   );
-  const focusRef = React.useRef();
 
   React.useEffect(() => {
     if (focusWithinTrack) {
       focusRef.current.button.focus();
     } else {
-      focusRef.current.focus();
+      focusRef.current.track.focus();
     }
   }, [focusTrack, focusWithinTrack]);
 
   const findTrackIndex = (id) => tracks.findIndex((track) => track.id === id);
+
   const setFocusTrack = (value) => dispatch({ type: "set-track", value });
-  const setFocusWithinTrack = (value) =>
-    dispatch({ type: "set-within", value });
+
   const clickFocusWithinTrack = (value) =>
     dispatch({ type: "click-within", value });
 
   const moveFocusWithinTrack = (transition) =>
-    setFocusWithinTrack(FOCUS_WITHIN_FSM.get(focusWithinTrack)[transition]);
+    dispatch({
+      type: "set-within",
+      value: FOCUS_WITHIN_FSM.get(focusWithinTrack)[transition],
+    });
 
   const onKeyDown = (event) => {
     if (event.defaultPrevented) return;

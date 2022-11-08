@@ -93,7 +93,6 @@ const useRefs = (ref) => {
   const buttonRef = React.useRef();
 
   React.useImperativeHandle(ref, () => ({
-    focus: () => trackRef.current.focus(),
     get track() {
       return trackRef.current;
     },
