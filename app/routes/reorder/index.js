@@ -165,6 +165,16 @@ const useSetup = () => {
         break;
       }
 
+      case "PageUp": {
+        setFocusTrack(tracks[0].id);
+        break;
+      }
+
+      case "PageDown": {
+        setFocusTrack(tracks[tracks.length - 1].id);
+        break;
+      }
+
       case "Right":
       case "ArrowRight": {
         moveFocusRightWithinTrack();
@@ -178,6 +188,7 @@ const useSetup = () => {
       }
 
       default:
+        console.info(event.key);
         return;
     }
   };

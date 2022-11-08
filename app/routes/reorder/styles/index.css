@@ -7,18 +7,29 @@ li:is(:focus, :focus-within) {
 }
 
 li:focus {
-  outline: blue solid 3px;
+  outline: 3px solid blue;
 }
 
 li > div {
   display: flex;
   gap: 1rem;
+  align-items: center;
 }
 
 li > div > *:first-child {
   flex-basis: 30ch;
 }
 
+li button {
+  background-color: transparent;
+  border: 2px solid black;
+  border-radius: 50%;
+  padding: 0.25rem;
+  height: 2.75rem;
+  aspect-ratio: 1/1;
+}
+
 li button:focus {
-  outline: blue solid 3px;
+  border-color: blue;
+  outline: 1px solid blue;
 }

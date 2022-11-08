@@ -2,7 +2,9 @@ lockfileVersion: 5.4
 
 specifiers:
   '@faker-js/faker': ^7.6.0
+  '@heroicons/react': ^2.0.13
   '@prisma/client': ^4.5.0
+  '@reach/visually-hidden': ^0.18.0
   '@remix-run/dev': ^1.7.5
   '@remix-run/eslint-config': ^1.7.5
   '@remix-run/node': ^1.7.5
@@ -46,7 +48,9 @@ specifiers:
   vitest: ^0.25.0
 
 dependencies:
+  '@heroicons/react': 2.0.13_react@18.2.0
   '@prisma/client': 4.5.0_prisma@4.5.0
+  '@reach/visually-hidden': 0.18.0_biqbaboplfbrettd7655fr4n2y
   '@remix-run/node': 1.7.5_biqbaboplfbrettd7655fr4n2y
   '@remix-run/react': 1.7.5_biqbaboplfbrettd7655fr4n2y
   '@remix-run/serve': 1.7.5_biqbaboplfbrettd7655fr4n2y
@@ -1571,6 +1575,14 @@ packages:
       '@hapi/hoek': 9.3.0
     dev: true
 
+  /@heroicons/react/2.0.13_react@18.2.0:
+    resolution: {integrity: sha512-iSN5XwmagrnirWlYEWNPdCDj9aRYVD/lnK3JlsC9/+fqGF80k8C7rl+1HCvBX0dBoagKqOFBs6fMhJJ1hOg1EQ==}
+    peerDependencies:
+      react: '>= 16'
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /@humanwhocodes/config-array/0.11.7:
     resolution: {integrity: sha512-kBbPWzN8oVMLb0hOUYXhmxggL/1cJE6ydvjDIGi9EnAGUyA7cLVKQg+d/Dsm+KZwx2czGHrCmMVLiyg8s5JPKw==}
     engines: {node: '>=10.10.0'}
@@ -1825,6 +1837,25 @@ packages:
   /@prisma/engines/4.5.0:
     resolution: {integrity: sha512-4t9ir2SbQQr/wMCNU4YpHWp5hU14J2m3wHUZnGJPpmBF8YtkisxyVyQsKd1e6FyLTaGq8LOLhm6VLYHKqKNm+g==}
     requiresBuild: true
+    dev: false
+
+  /@reach/polymorphic/0.18.0_react@18.2.0:
+    resolution: {integrity: sha512-N9iAjdMbE//6rryZZxAPLRorzDcGBnluf7YQij6XDLiMtfCj1noa7KyLpEc/5XCIB/EwhX3zCluFAwloBKdblA==}
+    peerDependencies:
+      react: ^16.8.0 || 17.x
+    dependencies:
+      react: 18.2.0
+    dev: false
+
+  /@reach/visually-hidden/0.18.0_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-NsJ3oeHJtPc6UOeV6MHMuzQ5sl1ouKhW85i3C0S7VM+klxVlYScBZ2J4UVnWB50A2c+evdVpCnld2YeuyYYwBw==}
+    peerDependencies:
+      react: ^16.8.0 || 17.x || 18.x
+      react-dom: ^16.8.0 || 17.x || 18.x
+    dependencies:
+      '@reach/polymorphic': 0.18.0_react@18.2.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /@remix-run/dev/1.7.5_67odqug3q6zvwws4422s5yrks4:

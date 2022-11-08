@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useFetcher } from "@remix-run/react";
 
+import { VisuallyHidden } from "@reach/visually-hidden";
+import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/24/solid";
 import { motion } from "framer-motion";
 
 const Track = React.forwardRef(
@@ -14,7 +16,7 @@ const Track = React.forwardRef(
     };
 
     return (
-      <motion.li id={track.id} ref={trackRef} {...props} layout>
+      <motion.li id={track.id} ref={trackRef} {...props} layout="position">
         <div>
           <div>{track.name}</div>
           <div>
@@ -26,7 +28,8 @@ const Track = React.forwardRef(
                 name="trackId"
                 value={track.id}
               >
-                Move up
+                <VisuallyHidden>Move up</VisuallyHidden>
+                <ArrowUpIcon aria-hidden focusable={false} />
               </button>
             </moveUp.Form>
           </div>
@@ -39,7 +42,8 @@ const Track = React.forwardRef(
                 name="trackId"
                 value={track.id}
               >
-                Move down
+                <VisuallyHidden>Move down</VisuallyHidden>
+                <ArrowDownIcon aria-hidden focusable={false} />
               </button>
             </moveDown.Form>
           </div>
@@ -49,18 +53,30 @@ const Track = React.forwardRef(
   }
 );
 
+const scrollIntoView = (type, node) => {
+  type === "done" &&
+    node.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+    });
+};
+
 const useFetchers = (trackRef) => {
   const moveUp = useFetcher();
   const moveDown = useFetcher();
 
   React.useEffect(() => {
-    moveUp.type === "done" &&
-      trackRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    return scrollIntoView(
+      moveUp.type,
+      trackRef.current.previousSibling || trackRef.current
+    );
   }, [moveUp, trackRef]);
 
   React.useEffect(() => {
-    moveDown.type === "done" &&
-      trackRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    return scrollIntoView(
+      moveDown.type,
+      trackRef.current.nextSibling || trackRef.current
+    );
   }, [moveDown, trackRef]);
 
   return { moveUp, moveDown };
