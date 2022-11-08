@@ -34,6 +34,7 @@
     "@remix-run/serve": "^1.7.5",
     "@remix-run/server-runtime": "^1.7.5",
     "bcryptjs": "^2.4.3",
+    "framer-motion": "^7.6.5",
     "isbot": "^3.6.3",
     "marked": "^4.2.2",
     "prisma": "^4.5.0",

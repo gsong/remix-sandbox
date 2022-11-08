@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useFetcher } from "@remix-run/react";
 
+import { motion } from "framer-motion";
+
 const Track = React.forwardRef(
   ({ track, focusWithinTrack, clickFocusWithinTrack, ...props }, ref) => {
     const { trackRef, buttonRef } = useRefs(ref);
@@ -12,7 +14,7 @@ const Track = React.forwardRef(
     };
 
     return (
-      <li id={track.id} ref={trackRef} {...props}>
+      <motion.li id={track.id} ref={trackRef} {...props} layout>
         <div>
           <div>{track.name}</div>
           <div>
@@ -42,7 +44,7 @@ const Track = React.forwardRef(
             </moveDown.Form>
           </div>
         </div>
-      </li>
+      </motion.li>
     );
   }
 );
