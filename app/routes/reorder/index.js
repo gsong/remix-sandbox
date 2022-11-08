@@ -1,7 +1,8 @@
 import * as React from "react";
 import { json } from "@remix-run/node";
-import { useFetcher, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 
+import Track from "./_components/Track.js";
 import { getTracks } from "./_data-sources/track.server.js";
 
 import styles from "./styles/index.css";
@@ -38,7 +39,12 @@ export default function ReorderRoute() {
               onClick={(e) => {
                 setFocusTrack(e.currentTarget.id);
               }}
-              {...{ track, focusWithinTrack, clickFocusWithinTrack, onKeyDown }}
+              {...{
+                track,
+                focusWithinTrack,
+                clickFocusWithinTrack,
+                onKeyDown,
+              }}
             />
           );
         })}
@@ -47,64 +53,6 @@ export default function ReorderRoute() {
     </main>
   );
 }
-
-const Track = React.forwardRef(
-  ({ track, focusWithinTrack, clickFocusWithinTrack, ...props }, ref) => {
-    const trackRef = React.useRef();
-    const buttonRef = React.useRef();
-    const moveUp = useFetcher();
-    const moveDown = useFetcher();
-
-    React.useImperativeHandle(ref, () => ({
-      focus: () => trackRef.current.focus(),
-      get track() {
-        return trackRef.current;
-      },
-      get button() {
-        return buttonRef.current;
-      },
-    }));
-
-    const onButtonClick = (button) => (event) => {
-      event.stopPropagation();
-      clickFocusWithinTrack({ track: track.id, button });
-    };
-
-    return (
-      <li id={track.id} ref={trackRef} {...props}>
-        <div>
-          <div>{track.name}</div>
-          <div>
-            <moveUp.Form method="post" action="_api/moveTrackUp">
-              <button
-                tabIndex={-1}
-                ref={focusWithinTrack === "up" ? buttonRef : null}
-                onClick={onButtonClick("up")}
-                name="trackId"
-                value={track.id}
-              >
-                Move up
-              </button>
-            </moveUp.Form>
-          </div>
-          <div>
-            <moveDown.Form method="post" action="_api/moveTrackDown">
-              <button
-                tabIndex={-1}
-                ref={focusWithinTrack === "down" ? buttonRef : null}
-                onClick={onButtonClick("down")}
-                name="trackId"
-                value={track.id}
-              >
-                Move down
-              </button>
-            </moveDown.Form>
-          </div>
-        </div>
-      </li>
-    );
-  }
-);
 
 const reducer = (state, action) => {
   switch (action.type) {
